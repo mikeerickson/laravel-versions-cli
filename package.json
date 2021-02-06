@@ -16,7 +16,8 @@
   ],
   "main": "index.js",
   "bin": {
-    "laravel-versions-cli": "index.js"
+    "laravel-versions-cli": "index.js",
+    "lv": "index.js"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -25,7 +26,7 @@
     "bump": "node ./tasks/bumpBuild.js",
     "bump:dev": "./tasks/bumpBuild.js --verbose",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint \"./**/*.{ts,tsx,js,jsx,vue}\" \"$@\""
+    "lint": "node ./tasks/lint.js"
   },
   "keywords": [
     "cli",

@@ -99,6 +99,7 @@ class CLI {
       print: require('./toolbox/print')(this.quiet),
       semver: require('semver'),
       strings: require('./toolbox/strings'),
+      arrays: require('./toolbox/arrays'),
       system,
       table: require('./toolbox/table.js'),
       template: require('./toolbox/template'),
