@@ -1,76 +1,77 @@
 {
-	"name": "laravel-versions-cli",
-	"packageName": "laravel-versions-cli",
-	"version": "0.0.1",
-	"build": "1",
-	"description": "laravel-versions-cli CLI",
-	"tagline": "Crafted with love by Mike Erickson...",
-	"author": "Mike Erickson <codedungeon@gmail.com> (https://github.com/mikeerickson)",
-	"repository": "https://github.com/mikeerickson}/laravel-versions-cli",
-	"contributors": [
-		{
-			"name": "Mike Erickson",
-			"email": "codedungeon@gmail.com",
-			"url": "(https://github.com/mikeerickson)"
-		}
-	],
-	"main": "index.js",
-	"bin": {
-		"laravel-versions-cli": "index.js"
-	},
-	"engines": {
-		"node": ">=10.0.0"
-	},
-	"scripts": {
-		"bump": "node ./tasks/bumpBuild.js",
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"lint": "eslint \"./**/*.{ts,tsx,js,jsx,vue}\" \"$@\""
-	},
-	"keywords": [
-		"cli",
-		"mikeerickson",
-		"laravel-versions-cli"
-	],
-	"license": "MIT",
-	"devDependencies": {
-		"babel-eslint": ">=5",
-		"eslint": ">=7",
-		"eslint-config-prettier": ">=7",
-		"eslint-plugin-prettier": ">=3",
-		"prettier": ">=2"
-	},
-	"dependencies": {
-		"@codedungeon/messenger": "0.9.1",
-		"@codedungeon/utils": "0.0.12",
-		"apisauce": "2.0.1",
-		"chalk": "4.1.0",
-		"cli-table3": "0.6.0",
-		"configstore": "5.0.1",
-		"dayjs": "1.10.4",
-		"dumper.js": "1.3.1",
-		"enquirer": "2.3.6",
-		"execa": "0.2.2",
-		"fs-extra": "9.1.0",
-		"fs-extra-promise": "1.0.1",
-		"fs-jetpack": "2.4.0",
-		"git-user-info": "1.0.1",
-		"git-user-local": "1.0.0",
-		"github-username": "6.0.0",
-		"ip": "1.1.5",
-		"lodash": "4.17.20",
-		"min-dot": "0.1.1",
-		"minimist": "1.2.5",
-		"mocha": "6.0.2",
-		"mustache": "4.1.0",
-		"node-ip": "0.1.2",
-		"npm-which": "3.0.1",
-		"ora": "5.3.0",
-		"please-upgrade-node": "3.2.0",
-		"pluralize": "8.0.0",
-		"semver": "7.3.4",
-		"trash": "7.1.0",
-		"update-notifier": "4.1.0",
-		"voca": "1.4.0",
-		"which": "2.0.2"
-	}
+  "name": "laravel-versions-cli",
+  "packageName": "laravel-versions-cli",
+  "version": "0.0.2",
+  "build": "4",
+  "description": "laravel-versions-cli CLI",
+  "tagline": "Crafted with love by Mike Erickson...",
+  "author": "Mike Erickson <codedungeon@gmail.com> (https://github.com/mikeerickson)",
+  "repository": "https://github.com/mikeerickson}/laravel-versions-cli",
+  "contributors": [
+    {
+      "name": "Mike Erickson",
+      "email": "codedungeon@gmail.com",
+      "url": "(https://github.com/mikeerickson)"
+    }
+  ],
+  "main": "index.js",
+  "bin": {
+    "laravel-versions-cli": "index.js"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "scripts": {
+    "bump": "node ./tasks/bumpBuild.js",
+    "bump:dev": "./tasks/bumpBuild.js --verbose",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint \"./**/*.{ts,tsx,js,jsx,vue}\" \"$@\""
+  },
+  "keywords": [
+    "cli",
+    "mikeerickson",
+    "laravel-versions-cli"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "babel-eslint": ">=5",
+    "eslint": ">=7",
+    "eslint-config-prettier": ">=7",
+    "eslint-plugin-prettier": ">=3",
+    "prettier": ">=2"
+  },
+  "dependencies": {
+    "@codedungeon/messenger": "0.9.1",
+    "@codedungeon/utils": "0.0.12",
+    "apisauce": "2.0.1",
+    "chalk": "4.1.0",
+    "cli-table3": "0.6.0",
+    "configstore": "5.0.1",
+    "dayjs": "1.10.4",
+    "dumper.js": "1.3.1",
+    "enquirer": "2.3.6",
+    "execa": "0.2.2",
+    "fs-extra": "9.1.0",
+    "fs-extra-promise": "1.0.1",
+    "fs-jetpack": "2.4.0",
+    "git-user-info": "1.0.1",
+    "git-user-local": "1.0.0",
+    "github-username": "6.0.0",
+    "ip": "1.1.5",
+    "lodash": "4.17.20",
+    "min-dot": "0.1.1",
+    "minimist": "1.2.5",
+    "mocha": "6.0.2",
+    "mustache": "4.1.0",
+    "node-ip": "0.1.2",
+    "npm-which": "3.0.1",
+    "ora": "5.3.0",
+    "please-upgrade-node": "3.2.0",
+    "pluralize": "8.0.0",
+    "semver": "7.3.4",
+    "trash": "7.1.0",
+    "update-notifier": "4.1.0",
+    "voca": "1.4.0",
+    "which": "2.0.2"
+  }
 }

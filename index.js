@@ -9,6 +9,6 @@ const app = new CLI(process.argv, __dirname)
   .version(/* version string override, if not supplied default version info will be displayed */)
   .examples(
     /* if not called, examples will be suppressed in help dialog */
-    `${pkgInfo.packageName} make:command TestCommand --name hello`
+    `${pkgInfo.packageName} make:command TestCommand --name hello`,
   )
-  .run()
+  .run({ default: 'info' })

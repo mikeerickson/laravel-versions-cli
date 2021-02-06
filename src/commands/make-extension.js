@@ -10,6 +10,7 @@ const colors = require('chalk')
 module.exports = {
   name: 'make:extension',
   description: `Create new ${pkgInfo.packageName} extension`,
+  hidden: true,
   usage: `gunner make:extension ${colors.blue('[name]')} ${colors.magenta('<flags>')}`,
   flags: {
     function: { aliases: ['f'], description: 'Extension Function Name', required: false },

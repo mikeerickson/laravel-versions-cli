@@ -550,10 +550,16 @@ class CLI {
     }
 
     // if no command or --help supplied, use default command if it exists
-    if (command.length === 0 && !this.help) {
-      command = this.fs.exists(path.resolve(app.getCommandPath(), 'default.js')) ? 'default' : ''
+    if (commandInfo.hasOwnProperty('default')) {
+      let defaultCommand = this.toolbox.strings.camelCase(commandInfo.default.replace('.js', ''))
+      if (this.fs.exists(path.resolve(app.getCommandPath(), defaultCommand + '.js'))) {
+        command = commandInfo.default
+      }
+    } else {
+      if (command.length === 0 && !this.help) {
+        command = this.fs.exists(path.resolve(app.getCommandPath(), 'default.js')) ? 'default' : ''
+      }
     }
-
     // if did not supply command show help
     return command.length > 0 ? this.executeCommand(command, args) : this.showHelp(this.appName)
   }
