@@ -8,6 +8,7 @@ const path = require('path')
 const app = require('./toolbox/app.js')
 const system = require('./toolbox/system.js')
 const print = require('./toolbox/print')(this.quiet)
+const strings = require('./toolbox/strings')
 
 const HELP_PAD = 30
 
@@ -28,16 +29,19 @@ class CLI {
     this.projectRoot = projectRootDir || path.dirname(this.fs.realpathSync(argv[1]))
     this.pkgInfo = require(path.join(this.fs.realpathSync(this.projectRoot), 'package.json'))
     this.versionInfo = this.pkgInfo.version
+    this.name = this.pkgInfo.name
     this.appName = this.pkgInfo.packageName
     this.packageName = this.pkgInfo.packageName
     this.tagline = this.pkgInfo.tagline || ''
+    this.author = this.pkgInfo.author || ''
+    this.contributors = this.pkgInfo.contributors || []
     this.packageName = this.pkgInfo.packageName || ''
 
     this.command = this.getCommand(argv)
 
     this.commandName = this.getCommandName(argv) // sub command (see make:command for example)
 
-    this.arguments = this.getArguments(argv)
+    this.arguments = this.getArguments(argv, this.command)
 
     // setup global options
     this.verbose = this.arguments.verbose || false // dont add shortcut -v as that is reserved for version
@@ -196,12 +200,36 @@ class CLI {
     return parsedArguments._.length >= 4 ? parsedArguments._[3] : ''
   }
 
-  getArguments(argv) {
+  getArguments(argv, module) {
     let argsParser = require('minimist')
     let args = argsParser(argv)
+    let argKeys = Object.keys(args)
     if (args.hasOwnProperty('_')) {
       delete args['_']
     }
+
+    let moduleRef = this.loadModule(module)
+    if (moduleRef) {
+      Object.keys(args).forEach((arg) => {
+        if (moduleRef.flags.hasOwnProperty(arg)) {
+          if (moduleRef.flags[arg].hasOwnProperty('aliases')) {
+            const aliases = moduleRef.flags[arg].aliases
+            aliases.forEach((alias) => {
+              args[alias] = args[arg]
+            })
+          }
+        }
+      })
+
+      // see if argument has an associated alias
+      const flags = Object.keys(moduleRef.flags)
+      flags.forEach((flag) => {
+        moduleRef.flags[flag].aliases.forEach((alias) => {
+          argKeys.includes(alias) ? (args[flag] = args[alias]) : null
+        })
+      })
+    }
+
     return args
   }
 
@@ -211,7 +239,7 @@ class CLI {
 
   loadModule(module = '') {
     // try kebabCase or camelCase filename
-    let files = [path.join(app.getCommandPath(), this.toolbox.strings.kebabCase(module) + '.js'), path.join(app.getCommandPath(), this.toolbox.strings.camelCase(module) + '.js')]
+    let files = [path.join(app.getCommandPath(), strings.kebabCase(module) + '.js'), path.join(app.getCommandPath(), strings.camelCase(module) + '.js')]
 
     let filename = ''
     let result = files.forEach((file) => {
@@ -351,9 +379,16 @@ class CLI {
       let versionStr = this.pkgInfo.version
       let buildStr = this.pkgInfo.build
 
-      const name = this.toolbox.strings.titleCase(this.packageName)
-      console.log(`🚧 ${this.toolbox.colors.cyan(name)} ${this.toolbox.colors.cyan('v' + versionStr + ' build ' + buildStr)}`)
-      console.log(`   ${this.toolbox.colors.magenta.italic(this.tagline)}`)
+      const name = this.packageName.length > 0 ? this.packageName : this.toolbox.strings.titleCase(this.name)
+      console.log(`🚧 ${this.toolbox.colors.blue.bold(name)} ${this.toolbox.colors.blue('v' + versionStr + ' build ' + buildStr)}`)
+      if (this.contributors.length > 0) {
+        let info = this.contributors[0]
+        console.log(`   ${this.toolbox.colors.green.italic('Crafted with love by ' + info.name + ' ' + info?.url)}`)
+      }
+      if (this.tagline.length > 0) {
+        console.log(`   ${this.toolbox.colors.magenta.italic.dim(this.tagline)}`)
+      }
+
       console.log()
     }
   }

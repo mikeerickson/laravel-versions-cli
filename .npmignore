@@ -1,0 +1,5 @@
+tasks/
+.editorconfig
+LICENSE
+prettier.config.js
+README.md

@@ -7,10 +7,11 @@ const _ = require('lodash')
 const colors = require('chalk')
 const Table = require('cli-table3')
 const app = require('../toolbox/app')
+const { defaultsDeep } = require('lodash')
 
-let future = colors.blue
+let future = colors.blue.italic
 let security = colors.yellow
-let eol = colors.redBright
+let eol = colors.redBright.bold.dim
 let bug = colors.green
 let heading = colors.blue.bold
 
@@ -19,15 +20,16 @@ module.exports = {
   description: 'Get version information for all Laravel projects',
   usage: `${app.getAppName()} info ${colors.magenta('<options>')}`,
   flags: {
-    list: { aliases: ['a'], description: 'List of available apps' },
-    project: { aliases: ['p'], description: 'Project name (multiple separate with comma)', default: 'laravel' },
-    versions: { aliases: ['v'], description: 'Versions (multiple separate with comma)', default: 'v8' },
-    limit: { aliases: ['l'], description: `Limit number of returned items ${colors.yellow.dim('(will always show upcoming releases)')}`, default: 1 },
+    list: { aliases: ['a'], description: 'List of available apps', hidden: true },
+    project: { aliases: ['p'], description: 'Project name (multiple separate with comma)', default: 'laravel', hidden: true },
+    versions: { aliases: ['s'], description: 'Versions (multiple separate with comma)', default: 'v5,v6,v7,v8' },
+    limit: { aliases: ['l'], description: 'Limit number of returned items', default: '4 last major releases' },
+    showFuture: { aliases: ['f'], description: 'Show Future Releases', default: true },
   },
   examples: ['info', 'info --versions 8', 'info --product laravel --limit 5', 'info --product laravel,lumen', 'info --list'],
 
   async execute(toolbox) {
-    let project = toolbox.arguments.project || 'laravel'
+    let project = toolbox.arguments.project || toolbox.arguments.p || 'laravel'
     if (project === 'laravel' || project === 'framework') {
       this._showLaravelVersionsInfo(toolbox)
     } else {
@@ -36,7 +38,9 @@ module.exports = {
   },
 
   async _showLaravelVersionsInfo(toolbox) {
-    let limit = toolbox.arguments.limit || null
+    let limit = toolbox.arguments.limit || toolbox.arguments.l || 4
+    let versions = toolbox.arguments.versions || toolbox.arguments.s || '5,6,7,8'
+    let showFuture = toolbox.arguments['show-future'] || toolbox.arguments.f ? (toolbox.arguments['show-future'] === 'true' || toolbox.arguments.f ? true : false) : true
 
     const api = toolbox.api.create({
       baseURL: 'https://laravelversions.com/api/versions',
@@ -81,28 +85,32 @@ module.exports = {
           break
       }
       /*eslint-enable */
-      table.push([`${color(version)}`, `${color(releaseDate)}`, `${color(bugFixesUntil)}`, `${color(securityUntil)}`, `${color(status)}`, `${color(lts)}`, `${color(url)}`]) // apiUrl
+      if (versions.includes(row.major)) {
+        table.push([`${color(version)}`, `${color(releaseDate)}`, `${color(bugFixesUntil)}`, `${color(securityUntil)}`, `${color(status)}`, `${color(lts)}`, `${color(url)}`]) // apiUrl
+      }
     })
 
-    table.insert(0, [
-      `${future('9')}`,
-      `${future('September, 2021 (estimated)')}`,
-      `${future('September, 2023 (estimated)')}`,
-      `${future('September, 2024 (estimated)')}`,
-      `${future('not released')}`,
-      `${future('  ✓')}`,
-      `${future('https://laravelversions.com/9')}`,
-    ])
-    table.insert(0, [
-      `${future('10')}`,
-      `${future('September, 2022 (estimated)')}`,
-      `${future('March, 2024 (estimated)')}`,
+    if (showFuture) {
+      table.insert(0, [
+        `${future('9')}`,
+        `${future('September, 2021 (estimated)')}`,
+        `${future('September, 2023 (estimated)')}`,
+        `${future('September, 2024 (estimated)')}`,
+        `${future('not released')}`,
+        `${future('  ✓')}`,
+        `${future('https://laravelversions.com/9')}`,
+      ])
+      table.insert(0, [
+        `${future('10')}`,
+        `${future('September, 2022 (estimated)')}`,
+        `${future('March, 2024 (estimated)')}`,
 
-      `${future('September, 2024 (estimated)')}`,
-      `${future('not released')}`,
-      '',
-      `${future('https://laravelversions.com/10')}`,
-    ])
+        `${future('September, 2024 (estimated)')}`,
+        `${future('not released')}`,
+        '',
+        `${future('https://laravelversions.com/10')}`,
+      ])
+    }
 
     console.log('')
     let oldestVersion = data.data[data.data.length - 1].latest
@@ -117,9 +125,9 @@ module.exports = {
   },
 
   async _showLaravelGitHubInfo(toolbox) {
-    let project = toolbox.arguments.project || 'laravel'
-    let versions = (toolbox.arguments.versions || 'v5,v6,v7,v8').split(',')
-    let limit = toolbox.arguments.limit || 1
+    let project = toolbox.arguments.project || toolbox.arguments.p || 'laravel'
+    let versions = (toolbox.arguments.versions || toolbox.arguments.s || 'v5,v6,v7,v8').split(',')
+    let limit = toolbox.arguments.limit || toolbox.arguments.l || 1
 
     let DATE_FORMAT = 'MMMM MM, YYYY'
 
