@@ -5,9 +5,8 @@
 
 const _ = require('lodash')
 const colors = require('chalk')
-const app = require('../toolbox/app')
 const Table = require('cli-table3')
-const { dd } = require('dumper.js')
+const app = require('../toolbox/app')
 
 module.exports = {
   name: 'info',
@@ -23,15 +22,14 @@ module.exports = {
 
   async execute(toolbox) {
     let project = toolbox.arguments.project || 'laravel'
-
     if (project === 'laravel') {
-      this.showLaravelVersionsInfo(toolbox)
+      this._showLaravelVersionsInfo(toolbox)
     } else {
-      this.showLaravelGitHubInfo(toolbox)
+      this._showLaravelGitHubInfo(toolbox)
     }
   },
 
-  async showLaravelVersionsInfo(toolbox) {
+  async _showLaravelVersionsInfo(toolbox) {
     const api = toolbox.api.create({
       baseURL: 'https://laravelversions.com/api/versions',
       headers: { Accept: 'application/vnd.github.v3+json' },
@@ -68,7 +66,7 @@ module.exports = {
     process.exit(0)
   },
 
-  async showLaravelGitHubInfo(toolbox) {
+  async _showLaravelGitHubInfo(toolbox) {
     let project = toolbox.arguments.project || 'laravel'
     let versions = (toolbox.arguments.versions || 'v5,v6,v7,v8').split(',')
     let limit = toolbox.arguments.limit || 1

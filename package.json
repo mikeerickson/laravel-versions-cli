@@ -2,7 +2,7 @@
   "name": "laravel-versions-cli",
   "packageName": "laravel-versions-cli",
   "version": "0.0.2",
-  "build": "4",
+  "build": "5",
   "description": "laravel-versions-cli CLI",
   "tagline": "Crafted with love by Mike Erickson...",
   "author": "Mike Erickson <codedungeon@gmail.com> (https://github.com/mikeerickson)",
