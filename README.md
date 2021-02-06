@@ -9,13 +9,13 @@ laravel-versions-cli CLI
 Using npm
 
 ```bash
-> npm install -g @/laravel-versions-cli
+> npm install -g @codedungeon/laravel-versions-cli
 ```
 
 Using yarn
 
 ```bash
-> yarn add global @/laravel-versions-cli
+> yarn add global @codedungeon/laravel-versions-cli
 ```
 
 ## Usage

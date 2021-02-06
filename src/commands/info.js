@@ -22,38 +22,58 @@ module.exports = {
   examples: ['info', 'info --versions 8', 'info --product laravel --limit 5', 'info --product laravel,lumen', 'info --list'],
 
   async execute(toolbox) {
-    //
-    // get command options
+    let project = toolbox.arguments.project || 'laravel'
+
+    if (project === 'laravel') {
+      this.showLaravelVersionsInfo(toolbox)
+    } else {
+      this.showLaravelGitHubInfo(toolbox)
+    }
+  },
+
+  async showLaravelVersionsInfo(toolbox) {
+    const api = toolbox.api.create({
+      baseURL: 'https://laravelversions.com/api/versions',
+      headers: { Accept: 'application/vnd.github.v3+json' },
+    })
+
+    const table = new Table({
+      head: ['Version', 'Release Date', 'Bug Fix', 'Security Fix Until', 'Status', ' LTS', 'URL'], // , 'API URL'
+      colWidths: [20, 30, 30, 30, 15, 8, 35], // , 30, 30, 10
+    })
+
+    let DATE_FORMAT = 'MMMM MM, YYYY'
+    let { data } = await api.get()
+    data.data.forEach((row) => {
+      let version = row.latest
+      let releaseDate = row.released_at ? toolbox.datetime(row.released_at).format(DATE_FORMAT) : ''
+      let bugFixesUnti = row.ends_bugfixes_at ? toolbox.datetime(row.ends_bugfixes_at).format(DATE_FORMAT) : 'n/a'
+      let securityUntil = row.ends_bugfixes_at ? toolbox.datetime(row.ends_securityfixes_at).format(DATE_FORMAT) : 'n/a'
+      let url = `https://laravelversions.com/${row.major}`
+      if (row.major <= 5) {
+        url = `https://laravelversions.com/${row.major}.${row.minor}`
+      }
+      let apiUrl = row.links.length > 1 ? row.links[1].href : row.links[0].href
+      let lts = row.is_lts ? '  ✓' : ' '
+      let status = row.status
+      table.push([version, releaseDate, bugFixesUnti, securityUntil, status, lts, url]) // apiUrl
+    })
+
+    console.log('')
+    let oldestVersion = data.data[data.data.length - 1].latest
+    let latestVersion = data.data[0].latest
+    toolbox.print.info(`Laravel Versions (v${oldestVersion} - v${latestVersion})`)
+
+    console.log(table.toString())
+    process.exit(0)
+  },
+
+  async showLaravelGitHubInfo(toolbox) {
     let project = toolbox.arguments.project || 'laravel'
     let versions = (toolbox.arguments.versions || 'v5,v6,v7,v8').split(',')
     let limit = toolbox.arguments.limit || 1
 
-    if (project === 'laravel') {
-      const api = toolbox.api.create({
-        baseURL: 'https://laravelversions.com/api/versions',
-        headers: { Accept: 'application/vnd.github.v3+json' },
-      })
-gs
-      const table = new Table({
-        head: ['Version', 'Release Date', 'Bug Fix', 'Security Fix Until', ' LTS', 'URL'],
-        colWidths: [20, 30, 30, 30, 8], // , 30, 30, 10
-      })
-
-      let DATE_FORMAT = 'MMMM MM, YYYY'
-      let { data } = await api.get()
-      data.data.forEach((row) => {
-        let version = row.latest
-        let releaseDate = row.released_at ? toolbox.datetime(row.released_at).format(DATE_FORMAT) : ''
-        let bugFixesUnti = row.ends_bugfixes_at ? toolbox.datetime(row.ends_bugfixes_at).format(DATE_FORMAT) : 'n/a'
-        let securityUntil = row.ends_bugfixes_at ? toolbox.datetime(row.ends_securityfixes_at).format(DATE_FORMAT) : 'n/a'
-        let url = row.links.length > 1 ? row.links[1].href : row.links[0].href
-        let lts = row.is_lts ? '  ✓' : ' '
-        table.push([version, releaseDate, bugFixesUnti, securityUntil, lts, url])
-      })
-
-      console.log(table.toString())
-      process.exit(0)
-    }
+    let DATE_FORMAT = 'MMMM MM, YYYY'
 
     versions = versions.map((item) => {
       return item.includes('v') ? item : 'v' + item
@@ -93,18 +113,15 @@ gs
       toolbox.print.info(project + ` (Limit: ${limit})`)
 
       const table = new Table({
-        head: ['Version', 'Release Date'], // , 'Bug Fix', 'Security Fix Until', 'LTS', 'URL'
-        colWidths: [20, 25], // , 30, 30, 10
+        head: ['Version', 'Release Date', 'Created'], // , 'Bug Fix', 'Security Fix Until', 'LTS', 'URL'
+        colWidths: [20, 25, 25], // , 30, 30, 10
       })
 
       let tableData = versionResults.map((row) => {
         let url = row.url
-        let releaseDate = toolbox.datetime(row.published_at).format('YYYY-MM-DD HH:mm A')
-        let bugFixUntil = toolbox.datetime(row.created_at).format('YYYY-MM-DD HH:mm A')
-        let securityUntil = toolbox.datetime(row.created_at).format('YYYY-MM-DD HH:mm A')
-        let lts = true ? '✓' : '-'
-        // table.push([row.tag_name, releaseDate, bugFixUntil, securityUntil, lts, url])
-        table.push([row.tag_name, releaseDate])
+        let releaseDate = toolbox.datetime(row.published_at).format(DATE_FORMAT)
+        let createDate = toolbox.datetime(row.created_at).format(DATE_FORMAT)
+        table.push([row.tag_name, releaseDate, createDate])
       })
 
       console.log(table.toString())
