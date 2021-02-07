@@ -161,8 +161,8 @@ class CLI {
         '  --overwrite, -o               Overwrite Existing Files(s) if creating in command',
         '  --quiet, -q                   Quiet mode (suppress console output)',
         '  --version, -v, -V             Show Version',
-        '  --verbose                     Verbose Output [only used in conjuction with --debug]',
-        this.toolbox.colors.magenta.italic(`                                 (includes table of ${this.packageName} options)`),
+        `  --verbose                     Verbose Output [only used in ${this.toolbox.colors.magenta('--debug')} mode]`,
+        this.toolbox.colors.blue.italic(`                                 (includes table of ${this.packageName} options)`),
       ]
 
       this.optionInfo = options.join('\n')
@@ -208,28 +208,31 @@ class CLI {
       delete args['_']
     }
 
-    let moduleRef = this.loadModule(module)
-    if (moduleRef) {
-      Object.keys(args).forEach((arg) => {
-        if (moduleRef.flags.hasOwnProperty(arg)) {
-          if (moduleRef.flags[arg].hasOwnProperty('aliases')) {
-            const aliases = moduleRef.flags[arg].aliases
-            aliases.forEach((alias) => {
-              args[alias] = args[arg]
-            })
+    if (args) {
+      let moduleRef = this.loadModule(module)
+      if (moduleRef) {
+        Object.keys(args).forEach((arg) => {
+          if (moduleRef?.flags?.hasOwnProperty(arg)) {
+            if (moduleRef.flags[arg].hasOwnProperty('aliases')) {
+              const aliases = moduleRef.flags[arg].aliases
+              aliases.forEach((alias) => {
+                args[alias] = args[arg]
+              })
+            }
           }
-        }
-      })
-
-      // see if argument has an associated alias
-      const flags = Object.keys(moduleRef.flags)
-      flags.forEach((flag) => {
-        moduleRef.flags[flag].aliases.forEach((alias) => {
-          argKeys.includes(alias) ? (args[flag] = args[alias]) : null
         })
-      })
-    }
 
+        // see if argument has an associated alias
+        if (moduleRef.hasOwnProperty('flags')) {
+          const flags = Object.keys(moduleRef.flags)
+          flags.forEach((flag) => {
+            moduleRef.flags[flag].aliases.forEach((alias) => {
+              argKeys.includes(alias) ? (args[flag] = args[alias]) : null
+            })
+          })
+        }
+      }
+    }
     return args
   }
 
@@ -383,7 +386,7 @@ class CLI {
       console.log(`🚧 ${this.toolbox.colors.blue.bold(name)} ${this.toolbox.colors.blue('v' + versionStr + ' build ' + buildStr)}`)
       if (this.contributors.length > 0) {
         let info = this.contributors[0]
-        console.log(`   ${this.toolbox.colors.green.italic('Crafted with love by ' + info.name + ' ' + info?.url)}`)
+        console.log(`   ${this.toolbox.colors.green.italic('Crafted with love by ' + info.name + ' (' + info?.url + ')')}`)
       }
       if (this.tagline.length > 0) {
         console.log(`   ${this.toolbox.colors.magenta.italic.dim(this.tagline)}`)
