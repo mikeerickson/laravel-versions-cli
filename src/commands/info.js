@@ -7,7 +7,6 @@ const _ = require('lodash')
 const colors = require('chalk')
 const Table = require('cli-table3')
 const app = require('../toolbox/app')
-const { defaultsDeep } = require('lodash')
 
 let future = colors.blue.italic
 let security = colors.yellow
@@ -40,6 +39,8 @@ module.exports = {
   async _showLaravelVersionsInfo(toolbox) {
     let limit = toolbox.arguments.limit || toolbox.arguments.l || 4
     let versions = toolbox.arguments.versions || toolbox.arguments.s || '5,6,7,8'
+    versions = typeof versions === 'number' ? [versions.toString()] : versions.split(',')
+
     let showFuture = toolbox.arguments['show-future'] || toolbox.arguments.f ? (toolbox.arguments['show-future'] === 'true' || toolbox.arguments.f ? true : false) : true
 
     const api = toolbox.api.create({
@@ -85,7 +86,7 @@ module.exports = {
           break
       }
       /*eslint-enable */
-      if (versions.includes(row.major)) {
+      if (versions.includes(row.major.toString())) {
         table.push([`${color(version)}`, `${color(releaseDate)}`, `${color(bugFixesUntil)}`, `${color(securityUntil)}`, `${color(status)}`, `${color(lts)}`, `${color(url)}`]) // apiUrl
       }
     })

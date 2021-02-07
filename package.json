@@ -1,8 +1,8 @@
 {
   "name": "@codedungeon/laravel-versions-cli",
-  "packageName": "Laravel Versions CLI",
+  "packageName": "laravel-versions-cli",
   "version": "0.0.2",
-  "build": "7",
+  "build": "9",
   "description": "laravel-versions-cli CLI",
   "author": "Mike Erickson <codedungeon@gmail.com> (https://github.com/mikeerickson)",
   "repository": "https://github.com/mikeerickson}/laravel-versions-cli",
@@ -24,7 +24,8 @@
   "scripts": {
     "bump": "node ./tasks/bumpBuild.js",
     "bump:dev": "./tasks/bumpBuild.js --verbose",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node ./tasks/test.js $1",
+    "test:ci": "mocha --reporter dot",
     "lint": "node ./tasks/lint.js"
   },
   "keywords": [
@@ -35,10 +36,14 @@
   "license": "MIT",
   "devDependencies": {
     "babel-eslint": ">=5",
+    "chai": "4.2.0",
     "eslint": ">=7",
     "eslint-config-prettier": ">=7",
     "eslint-plugin-prettier": ">=3",
-    "prettier": ">=2"
+    "mocha": "6.0.2",
+    "mocha-better-spec-reporter": "3.1.0",
+    "prettier": ">=2",
+    "sinon": "9.2.4"
   },
   "dependencies": {
     "@codedungeon/messenger": "0.9.1",
@@ -61,7 +66,6 @@
     "lodash": "4.17.20",
     "min-dot": "0.1.1",
     "minimist": "1.2.5",
-    "mocha": "6.0.2",
     "mustache": "4.1.0",
     "node-ip": "0.1.2",
     "npm-which": "3.0.1",
