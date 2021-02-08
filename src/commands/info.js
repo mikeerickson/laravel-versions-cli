@@ -8,6 +8,7 @@ const colors = require('chalk')
 const Table = require('cli-table3')
 const app = require('../toolbox/app')
 const delay = require('delay')
+const { defaultsDeep } = require('lodash')
 
 let future = colors.blue.italic
 let security = colors.yellow
@@ -26,11 +27,12 @@ module.exports = {
     limit: { aliases: ['l'], description: 'Limit number of returned items', default: '4 last major releases' },
     ['show-future']: { aliases: ['f'], description: 'Show Future Releases', default: true },
   },
-  examples: ['info', 'info --versions 8', 'info --product laravel --limit 5', 'info --product laravel,lumen', 'info --list'],
+  examples: ['info', 'info --versions 8', 'info --versions 7,8', 'info --limit 10', 'info --show-future false'],
 
   async execute(toolbox) {
     let project = toolbox.arguments.project || toolbox.arguments.p || 'laravel'
-    if (project !== 'larvel') {
+
+    if (project !== 'laravel') {
       console.log('')
       toolbox.print.warning(`${project} not supported, laravel will be used`, 'WARNING')
       project = 'laravel' // override until other products are completed
@@ -52,6 +54,9 @@ module.exports = {
     let showFuture = toolbox.arguments['show-future'] ? toolbox.arguments['show-future'] === 'true' : this.flags['show-future'].default
     let versions = toolbox.arguments.versions || toolbox.arguments.s || '5,6,7,8'
     versions = typeof versions === 'number' ? [versions.toString()] : versions.split(',')
+    versions = versions.map((item) => {
+      return item.replace(/\D/g, '')
+    })
 
     const api = toolbox.api.create({
       baseURL: 'https://laravelversions.com/api/versions',
@@ -74,12 +79,10 @@ module.exports = {
       let releaseDate = row.released_at ? toolbox.datetime(row.released_at).format(DATE_FORMAT) : ''
       let bugFixesUntil = row.ends_bugfixes_at ? toolbox.datetime(row.ends_bugfixes_at).format(DATE_FORMAT) : 'n/a'
       let securityUntil = row.ends_bugfixes_at ? toolbox.datetime(row.ends_securityfixes_at).format(DATE_FORMAT) : 'n/a'
-      let url = `https://laravelversions.com/${row.major}`
-      if (row.major <= 5) {
-        url = `https://laravelversions.com/${row.major}.${row.minor}`
-      }
+      let url = row.major > 5 ? `https://laravelversions.com/${row.major}` : `https://laravelversions.com/${row.major}.${row.minor}`
+
       let apiUrl = row.links.length > 1 ? row.links[1].href : row.links[0].href
-      let lts = row.is_lts ? '  ✓' : ' '
+      let lts = row.is_lts ? '  ✔' : ' '
       let status = row.status
 
       /*eslint-disable */
@@ -108,7 +111,7 @@ module.exports = {
         `${future('September, 2023 (estimated)')}`,
         `${future('September, 2024 (estimated)')}`,
         `${future('not released')}`,
-        `${future('  ✓')}`,
+        `${future('  ✔')}`,
         `${future('https://laravelversions.com/9')}`,
       ])
       table.insert(0, [

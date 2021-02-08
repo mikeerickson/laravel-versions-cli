@@ -1,14 +1,14 @@
 <h1 align="center">
-    <img src="docs/images/logo2.png" width="15%" height="15%" alt="Laravel Versions CLI">
+    <img src="docs/images/logo2.png" width="50%" height="50%" alt="Laravel Versions CLI">
 </h1>
 
 <h1 align="center">
-    <img src="docs/images/screenshot-shadow.png" width="50%" height="50%" alt="Laravel Versions CLI">
+    <img src="docs/images/screenshot-shadow.png" width="100gu%" height="100gu%" alt="Laravel Versions CLI">
 </h1>
 
 ## Introduction
 
-Laravel Versions CLI provides a simple CLI interface to laravel version information provided by [Laravel Versions Website](https://laravelversions.com)
+Laravel Versions CLI provides a simple cli interface to laravel version information provided by [Laravel Versions Website](https://laravelversions.com)
 
 ## Installation
 
@@ -111,6 +111,8 @@ Released under the MIT license
 laravel-versions-cli written by Mike Erickson
 
 E-Mail: [codedungeon@gmail.com](mailto:codedungeon@gmail.com)
+
+Issues: [https://github.com/mikeerickson/laravel-versions-cli](https://github.com/mikeerickson/laravel-versions-cli/issues)
 
 Twitter: [@codedungeon](http://twitter.com/codedungeon)
 
