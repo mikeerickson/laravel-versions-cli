@@ -7,6 +7,7 @@ const _ = require('lodash')
 const colors = require('chalk')
 const Table = require('cli-table3')
 const app = require('../toolbox/app')
+const delay = require('delay')
 
 let future = colors.blue.italic
 let security = colors.yellow
@@ -23,12 +24,22 @@ module.exports = {
     project: { aliases: ['p'], description: 'Project name (multiple separate with comma)', default: 'laravel', hidden: true },
     versions: { aliases: ['s'], description: 'Versions (multiple separate with comma)', default: 'v5,v6,v7,v8' },
     limit: { aliases: ['l'], description: 'Limit number of returned items', default: '4 last major releases' },
-    showFuture: { aliases: ['f'], description: 'Show Future Releases', default: true },
+    ['show-future']: { aliases: ['f'], description: 'Show Future Releases', default: true },
   },
   examples: ['info', 'info --versions 8', 'info --product laravel --limit 5', 'info --product laravel,lumen', 'info --list'],
 
   async execute(toolbox) {
     let project = toolbox.arguments.project || toolbox.arguments.p || 'laravel'
+    if (project !== 'larvel') {
+      console.log('')
+      toolbox.print.warning(`${project} not supported, laravel will be used`, 'WARNING')
+      project = 'laravel' // override until other products are completed
+      await delay(3000)
+      console.log('')
+    }
+
+    let showFuture = toolbox.arguments['show-future']
+
     if (project === 'laravel' || project === 'framework') {
       this._showLaravelVersionsInfo(toolbox)
     } else {
@@ -38,10 +49,9 @@ module.exports = {
 
   async _showLaravelVersionsInfo(toolbox) {
     let limit = toolbox.arguments.limit || toolbox.arguments.l || 4
+    let showFuture = toolbox.arguments['show-future'] ? toolbox.arguments['show-future'] === 'true' : this.flags['show-future'].default
     let versions = toolbox.arguments.versions || toolbox.arguments.s || '5,6,7,8'
     versions = typeof versions === 'number' ? [versions.toString()] : versions.split(',')
-
-    let showFuture = toolbox.arguments['show-future'] || toolbox.arguments.f ? (toolbox.arguments['show-future'] === 'true' || toolbox.arguments.f ? true : false) : true
 
     const api = toolbox.api.create({
       baseURL: 'https://laravelversions.com/api/versions',

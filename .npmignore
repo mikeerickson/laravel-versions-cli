@@ -1,5 +1,9 @@
 tasks/
+docs/
+/test
 .editorconfig
+.eslintrc.js
+*.md
 LICENSE
 prettier.config.js
 README.md
