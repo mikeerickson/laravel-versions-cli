@@ -3,7 +3,7 @@
 </h1>
 
 <h1 align="center">
-    <img src="docs/images/screenshot-shadow.png" width="100gu%" height="100gu%" alt="Laravel Versions CLI">
+    <img src="docs/images/screenshot-shadow.png" width="100%" height="100%" alt="Laravel Versions CLI">
 </h1>
 
 ## Introduction
