@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="docs/images/logo2.png" width="50%" height="50%" alt="Laravel Versions CLI">
+    <img src="docs/images/logo3.png" width="50%" height="50%" alt="Laravel Versions CLI">
 </h1>
 
 <h1 align="center">
