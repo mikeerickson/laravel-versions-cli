@@ -1,14 +1,20 @@
 #!/usr/bin/env node
 
-const { CLI } = require('@codedungeon/gunner')
+const { CLI, colors } = require('@codedungeon/gunner')
 const pkgInfo = require('./package.json')
 
 const app = new CLI(process.argv, __dirname)
-  .usage(`${pkgInfo.packageName} info --limit 5`)
+  .usage(
+    `
+  ${pkgInfo.packageName} info --limit 5
+  lv info --limit 5 ${colors.magenta('(uses `lv` alias)')}`,
+  )
   .options(/* if not called, options will be suppressed in help dialog */)
-  .version(/* version string override, if not supplied default version info will be displayed */)
   .examples(
-    /* if not called, examples will be suppressed in help dialog */
-    `${pkgInfo.packageName} info --versions 7,8`,
+    `
+  ${pkgInfo.packageName} (or lv) ${colors.magenta('(executes using default parameters)')}
+  ${pkgInfo.packageName} (or lv) info --versions 7,8 ${colors.magenta('(shows version 7,8)')}
+  ${pkgInfo.packageName} (or lv) info --limit 2 ${colors.magenta('(returns 2 rows)')},
+  ${pkgInfo.packageName} (or lv) info --show-future false ${colors.magenta('(suppress future releases)')}`,
   )
   .run({ default: 'info' })
