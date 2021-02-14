@@ -54,7 +54,7 @@ describe('info', (done) => {
     exec('laravel-versions-cli info --versions 6,8', (err, stdout, stderr) => {
       let result = stdout.replace(/\n/gi, '')
       expect(result).contain('8.')
-      expect(result).to.not.contain('7.')
+      expect(result).to.not.contain('7.30')
       expect(result).contain('6.')
     })
     done()

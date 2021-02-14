@@ -6,7 +6,6 @@
 const _ = require('lodash')
 const colors = require('chalk')
 const Table = require('cli-table3')
-const app = require('../toolbox/app')
 const delay = require('delay')
 const { defaultsDeep } = require('lodash')
 
@@ -19,7 +18,7 @@ let heading = colors.blue.bold
 module.exports = {
   name: 'info',
   description: 'Get version information for all Laravel projects',
-  usage: `${app.getAppName()} info ${colors.magenta('<options>')}`,
+  usage: `laravel-versions-cli info ${colors.magenta('<options>')}`,
   flags: {
     list: { aliases: ['a'], description: 'List of available apps', hidden: true },
     project: { aliases: ['p'], description: 'Project name (multiple separate with comma)', default: 'laravel', hidden: true },

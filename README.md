@@ -26,19 +26,18 @@ Using yarn
 
 ## Usage
 
-Laravel Versions CLI can be executed using `laravel-versions-cli` or `lv` which was created during installation.
-For more information, please refer to the [options](#options) section below
+Laravel Versions CLI can be executed using `laravel-versions-cli` or `lv`. For more information, please refer to the [options](#options) section below
 
 _Note: You may have an existing `lv` alias in your bash aliases which could override the `lv` alias_
 
 ```bash
-laravel-versions-cli info
+> laravel-versions-cli info
 ```
 
 or using `lv` alias
 
 ```bash
-lv info
+> lv info
 ```
 
 ## Options
@@ -80,25 +79,25 @@ Examples:
 **Show only versions 7 and 8**
 
 ```bash
-laravel-versions-cli info --versions 7,8
+> laravel-versions-cli info --versions 7,8
 ```
 
 **Show only last 4 major major**
 
 ```bash
-laravel-versions-cli info --limit 4
+> laravel-versions-cli info --limit 4
 ```
 
 **Show only last 10 releases**
 
 ```bash
-laravel-versions-cli info --limit 10
+> laravel-versions-cli info --limit 10
 ```
 
 **Don't inlcude future releases**
 
 ```bash
-laravel-versions-cli info --show-future false
+> laravel-versions-cli info --show-future false
 ```
 
 ## License
