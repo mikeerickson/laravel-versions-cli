@@ -2,7 +2,7 @@
   "name": "@codedungeon/laravel-versions-cli",
   "packageName": "laravel-versions-cli",
   "version": "0.0.3",
-  "build": "20",
+  "build": "21",
   "description": "laravel-versions-cli CLI",
   "author": "Mike Erickson <codedungeon@gmail.com> (https://github.com/mikeerickson)",
   "repository": "https://github.com/mikeerickson}/laravel-versions-cli",
@@ -47,7 +47,7 @@
     "valid-filename": "3.1.0"
   },
   "dependencies": {
-    "@codedungeon/gunner": "0.25.2",
+    "@codedungeon/gunner": "0.25.4",
     "@codedungeon/messenger": "0.9.1",
     "@codedungeon/utils": "0.0.12",
     "apisauce": "2.0.1",

@@ -12,7 +12,7 @@ const examples = [
 
 const exampleInfo = examples.join('\n  ')
 
-const app = new CLI(process.argv, __dirname)
+const app = new CLI(process.argv, __dirname, pkgInfo)
   .usage(
     `${pkgInfo.packageName} info --limit 5
   lv info --limit 5 ${colors.magenta('(uses `lv` alias)')}`,
