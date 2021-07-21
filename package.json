@@ -1,8 +1,8 @@
 {
   "name": "@codedungeon/laravel-versions-cli",
   "packageName": "laravel-versions-cli",
-  "version": "0.0.5",
-  "build": "21",
+  "version": "0.0.6",
+  "build": "22",
   "description": "laravel-versions-cli",
   "author": "Mike Erickson <codedungeon@gmail.com> (https://github.com/mikeerickson)",
   "repository": "https://github.com/mikeerickson/laravel-versions-cli",
