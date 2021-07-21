@@ -106,19 +106,19 @@ module.exports = {
     if (showFuture) {
       table.insert(0, [
         `${future('9')}`,
-        `${future('September, 2021 (estimated)')}`,
-        `${future('September, 2023 (estimated)')}`,
-        `${future('September, 2024 (estimated)')}`,
+        `${future('January, 2022 (estimated)')}`,
+        `${future('January, 2024 (estimated)')}`,
+        `${future('January, 2025 (estimated)')}`,
         `${future('not released')}`,
         `${future('  ✔')}`,
         `${future('https://laravelversions.com/9')}`,
       ])
       table.insert(0, [
         `${future('10')}`,
-        `${future('September, 2022 (estimated)')}`,
-        `${future('March, 2024 (estimated)')}`,
+        `${future('January, 2023 (estimated)')}`,
+        `${future('July, 2024 (estimated)')}`,
 
-        `${future('September, 2024 (estimated)')}`,
+        `${future('January, 2025 (estimated)')}`,
         `${future('not released')}`,
         '',
         `${future('https://laravelversions.com/10')}`,
