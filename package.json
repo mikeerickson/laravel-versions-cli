@@ -51,7 +51,7 @@
     "valid-filename": "3.1.0"
   },
   "dependencies": {
-    "@codedungeon/gunner": "0.25.4",
+    "@codedungeon/gunner": "0.61.0",
     "@codedungeon/messenger": "0.9.1",
     "@codedungeon/utils": "0.0.12",
     "apisauce": "2.0.1",
